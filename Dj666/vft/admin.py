@@ -125,6 +125,8 @@ class PandaAdmin(admin.ModelAdmin):
     radio_fields = {'sex':admin.HORIZONTAL} #编辑页面使用单选按钮
     # raw_id_fields = ('fk') # 外键 或者 多对多的时候 数值列表
 
+    #201712042250
+
 
 
 

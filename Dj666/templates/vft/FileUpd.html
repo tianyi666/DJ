@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+$(document).ready(function(){
+    $("#file_upload").uploadify({
+            'swf' : 'js/uploadify/uploadify.swf',
+            'uploader' : '/perf/upload_handle/',
+            'formData' : {csrfmiddlewaretoken: '{{ csrf_token }}'},
+    });
+});
+</script>
+</head>
+<body>
+<p><img src="{{ MEDIA_URL }}{{ dog.headimg.url }}"> </p>
+<h1>register</h1>
+<p>{{ dog.name }}</p>
+<p>{{ dog.headimg }}</p>
+<form method="post" enctype="multipart/form-data" >
+{#    注意 下面两句的不同#}
+    {% csrf_token %}
+    {{ csrf_token }}
+
+    {{ df.as_p }}
+<input type="submit" value="ok"/>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reg</title>
+</head>
+<body>
+<form action="" method="post">
+    {% csrf_token %}
+{#{{ form.as_p }}#}
+
+{#    错误数据集合#}
+{#    <p>{{ e }}</p>#}
+    <p>{{ form.errors.as_json }}</p>
+{#    非字段错误#}
+{#    <p>{{ form.non_field_errors }}</p>#}
+
+
+    <p> {{ form.name.errors }}</p>
+    <p> {{ form.name.label_tag }}{{ form.name }}</p>
+    <p>{{ form.age.label_tag }}{{ form.age }}</p>
+    <p>{{ form.chk.label_tag }}{{ form.chk }}</p>
+    <p>{{ form.msg.label_tag }}{{ form.msg }}</p>
+
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

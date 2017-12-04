@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<p>{% cycle "1" "2" as cys %}</p>
+
+
+<p>ssssssssssssssssssssssssssssss</p>
+{% for x in ctx %}
+<p>{{ cys }}</p>
+{% endfor %}
+
+<p>ssssssssssssssssssssssssssssss</p>
+{% for x in ctx %}
+{#    前面加上cycle 的标签 才会到下一个#}
+<p>{% cycle cys %} </p>
+{% endfor %}
+
+<p>ssssssssssssssssssssssssssssss</p>
+{% for x in ctx %}
+{#    写在for循环里面才管用#}
+ <p>{% cycle "1" "2" as cys2 silent %}</p>
+<p>{% cycle cys2 %} </p>
+{% endfor %}
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for dog in  object_list %}
+<p>{{ dog.name }}</p>
+<p><img src="{{ MEDIA_URL }}{{ dog.headimg.url }}"> </p>
+{% endfor %}
+
+{% for dog in  dog_list %}
+<p>{{ dog.name }}</p>
+<p><img src="{{ MEDIA_URL }}{{ dog.headimg.url }}"> </p>
+{% endfor %}
+{{ exdata }}
+</body>
+</html>

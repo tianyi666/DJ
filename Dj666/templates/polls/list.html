@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% if exdata %}
+    <title>{{ exdata }}</title>
+    {% else %}
+    <title>Title</title>
+    {% endif %}
+</head>
+<body>
+<ul>
+    {% for l in ls %}
+       <li> {{ l.name }}___{{ l.age }}___{{ l.id }}</li>
+    {% endfor %}
+
+</ul>
+</body>
+</html>

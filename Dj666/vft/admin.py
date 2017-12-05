@@ -45,9 +45,11 @@ class PandaListFilter(admin.SimpleListFilter):
     parameter_name = 'qname'
 
     def lookups(self, request, model_admin):
+        # qs = model_admin.get_queryset(request) 获取查询集
         return (('pp','盼盼'),('npp', '不盼盼'),)
 
     def queryset(self, request, queryset):
+        # if request.user.is_superuser 获取request信息
         if self.value()=='pp':
             return queryset.filter(name='盼盼')
         if self.value()=='npp':
@@ -89,6 +91,7 @@ class PandaAdmin(admin.ModelAdmin):
             'description':'<h1>说明介绍</h1>'
         }),
     )
+    readonly_fields = ('age',) #添加和编辑都不可用
     #在列表页面中显示的字段
     # list_display=('id','name','age') #方式一
 

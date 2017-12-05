@@ -43,6 +43,7 @@ class PandaForm(forms.ModelForm):
 class PandaListFilter(admin.SimpleListFilter):
     title = '熊猫名字'
     parameter_name = 'qname'
+    # template = 'mytemplate.html'
 
     def lookups(self, request, model_admin):
         # qs = model_admin.get_queryset(request) 获取查询集
@@ -127,6 +128,7 @@ class PandaAdmin(admin.ModelAdmin):
     preserve_filters=False  #保存之后 是否保留过滤器
     radio_fields = {'sex':admin.HORIZONTAL} #编辑页面使用单选按钮
     # raw_id_fields = ('fk') # 外键 或者 多对多的时候 数值列表
+    search_fields = ('name',)
 
     #201712042250
 

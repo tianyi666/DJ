@@ -93,7 +93,7 @@ class PandaAdmin(admin.ModelAdmin):
             'description':'<h1>说明介绍</h1>'
         }),
     )
-    readonly_fields = ('age',) #添加和编辑都不可用
+    # readonly_fields = ('age',) #添加和编辑都不可用
     #在列表页面中显示的字段
     # list_display=('id','name','age') #方式一
 
@@ -115,7 +115,9 @@ class PandaAdmin(admin.ModelAdmin):
 
     list_display = ('__str__','formprename','modelprename',funprename,'htmlcol','funsex','age','sex') #方式二、三、四
     list_display_links = ('__str__','formprename')    #None #添加链接
+
     list_editable = ('age',)
+
     # list_filter = (('sex',admin.AllValuesFieldListFilter),) #可以设置关联查找,但必须是Model属性， e.g: company__name
     # list_filter = (('sex',admin.ChoicesFieldListFilter),)
     list_filter = (('sex', admin.ChoicesFieldListFilter),
@@ -169,6 +171,9 @@ class PandaAdmin(admin.ModelAdmin):
         # print(super(PandaAdmin,self).get_changelist_form(request, **kwargs))
         return super(PandaAdmin,self).get_changelist_form(request, **kwargs)
 
+    def response_add(self, request, obj, post_url_continue=None):
+        from django.shortcuts import redirect
+        return redirect('https://www.baidu.com/')
 
 
 

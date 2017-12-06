@@ -4,6 +4,7 @@ from django import  forms
 from django.forms import  widgets
 from django.db import models
 from django.utils.html import format_html
+from django.shortcuts import HttpResponse
 import gettext
 _=gettext.gettext
 
@@ -128,9 +129,46 @@ class PandaAdmin(admin.ModelAdmin):
     preserve_filters=False  #保存之后 是否保留过滤器
     radio_fields = {'sex':admin.HORIZONTAL} #编辑页面使用单选按钮
     # raw_id_fields = ('fk') # 外键 或者 多对多的时候 数值列表
-    search_fields = ('name',)
+    search_fields = ('name',) #'^name'
 
-    #201712042250
+    # 自定义查询集合
+    # model/?q=all|b=1  get 查询 记住链接格式即可
+    def get_search_results(self, request, queryset, search_term):
+        # print(search_term)
+        # print(self.get_urls() )
+        if 'b=1'in search_term:
+            return self.model.objects.all() , True
+        else:
+            queryset , use_distinct=super(PandaAdmin,self).get_search_results( request, queryset, search_term)
+            return queryset , use_distinct
+
+    # 添加模块需要的urls  /admin/myapp/mymodel/my_view/url/
+    def get_urls(self):
+        from django.conf.urls import url
+        from django.views.generic import RedirectView
+        urls=super(PandaAdmin,self).get_urls()
+        new_urls=[
+            url(r'^bd/bd', RedirectView.as_view(url='http://127.0.0.1:8000/')),
+            url(r'^bd/dir', self.my_view),
+            url(r'bd/admindir',self.admin_site.admin_view(self.my_view,cacheable=True))
+        ]
+        return urls+new_urls
+
+    def my_view(self,request):
+        return HttpResponse('模版自定义页面')
+
+    # 重新定义外键数据源   formfield_for_choice_field：kwargs['choices']
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == "status":
+    #         kwargs["queryset"] = Dog.objects.filter(name='盼盼')
+    #     return super(PandaAdmin,self).formfield_for_foreignkey(db_field, request, **kwargs)
+    #
+
+    # 返回更改页面form类，本例默认为PandaForm
+    def get_changelist_form(self, request, **kwargs):
+        # print(super(PandaAdmin,self).get_changelist_form(request, **kwargs))
+        return super(PandaAdmin,self).get_changelist_form(request, **kwargs)
+
 
 
 

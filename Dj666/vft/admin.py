@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Dog,Panda
+from .models import Dog,Panda,School,Student,Sub,Teach
 from django import  forms
 from django.forms import  widgets
 from django.db import models
@@ -67,6 +67,7 @@ funprename.short_description = 'fun别名'
 
 @admin.register(Panda)
 class PandaAdmin(admin.ModelAdmin):
+
     #定义自己的Form两种方式
     # form = PandaForm
 
@@ -112,7 +113,7 @@ class PandaAdmin(admin.ModelAdmin):
     funsex.short_description = 'funsex'
     funsex.boolean = True
 
-
+    ordering = ['-age']
     list_display = ('__str__','formprename','modelprename',funprename,'htmlcol','funsex','age','sex') #方式二、三、四
     list_display_links = ('__str__','formprename')    #None #添加链接
 
@@ -171,11 +172,55 @@ class PandaAdmin(admin.ModelAdmin):
         # print(super(PandaAdmin,self).get_changelist_form(request, **kwargs))
         return super(PandaAdmin,self).get_changelist_form(request, **kwargs)
 
+
     def response_add(self, request, obj, post_url_continue=None):
         from django.shortcuts import redirect
         return redirect('https://www.baidu.com/')
 
+    def save_model(self, request, obj, form, change):
+        # print(form.cleaned_data['name'])
+        print(obj.age)
+        obj.save()
 
+
+    def get_changeform_initial_data(self, request):
+        return {'name':'默认姓名'}
+
+    def add_view(self, request, form_url='', extra_context=None):
+        extra_context=extra_context or {}
+        extra_context['exdata']='exdata'
+        # form_url='/bd' #form action
+        # print(form_url,extra_context)
+        return super(PandaAdmin,self).add_view(request, form_url, extra_context)
+
+#-----------------------------------------------------
+
+class StudentInline(admin.TabularInline):
+    model = Student
+    extra = 1
+    max_num = 5
+    #多个外键的时候需要指定
+    # fk_name = 'school'
+
+@admin.register(School)
+class SchoolAdmin(admin.ModelAdmin):
+    inlines = [StudentInline,]
+
+class MembershipInline(admin.TabularInline):
+    model = Teach.members.through
+
+@admin.register(Sub)
+class SubAdmin(admin.ModelAdmin):
+    inlines = [MembershipInline,]
+
+@admin.register(Teach)
+class TeachAdmin(admin.ModelAdmin):
+    inlines = [MembershipInline,]
+    exclude = ('members',) #这个是重点
+    list_display = ('name','mycol',)
+    def mycol(self,obj):
+        return obj.members.first().name
+    mycol.short_description = '学科'
 
 
 

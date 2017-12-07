@@ -40,3 +40,32 @@ class Panda(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class School(models.Model):
+    name=models.CharField(max_length=20)
+    desc=models.CharField(max_length=200,blank=True,null=True)
+
+    def __str__(self):
+        return self.name
+
+class Student(models.Model):
+    name = models.CharField(max_length=20)
+    age=models.IntegerField()
+    sex=models.BooleanField()
+    school=models.ForeignKey(School)
+
+    def __str__(self):
+        return self.name
+
+
+class Sub(models.Model):
+    name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
+
+class Teach(models.Model):
+    name = models.CharField(max_length=20)
+    members=models.ManyToManyField(Sub)
+    def __str__(self):
+        return self.name

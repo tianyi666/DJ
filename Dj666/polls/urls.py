@@ -1,11 +1,12 @@
 from django.conf.urls import url,include
 from polls import views
+from .admin import admin_site
 
 
 
 urlpatterns = [
     url(r'^$', views.index),
-
+    url(r'^admin/', include(admin_site.urls)),
 
     url(r'^newuser$', views.newuser, name='newuser'),
     url(r'^ls$', views.IndexView.as_view(), name='ls'),

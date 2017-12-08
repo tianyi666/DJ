@@ -193,6 +193,26 @@ class PandaAdmin(admin.ModelAdmin):
         # print(form_url,extra_context)
         return super(PandaAdmin,self).add_view(request, form_url, extra_context)
 
+    def upd_action(self,request,queryset):
+
+        # rows_updated=queryset.update(age=6)
+        # message_bit = "%s 调数据更新成功" % rows_updated
+        # self.message_user(request,message_bit)
+
+        selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+        from django.contrib.contenttypes.models import ContentType
+        ct = ContentType.objects.get_for_model(queryset.model)
+        print(ct.pk)
+        return HttpResponse('<h1>%s</h1>' % ','.join(selected))
+
+
+    upd_action.short_description ='更新年龄'
+    # actions=None #删除所有action
+    actions = ['upd_action',]
+    # 全局添加action
+    # admin.site.add_action(upd_action, 'action_name')
+
+
 #-----------------------------------------------------
 
 class StudentInline(admin.TabularInline):
@@ -218,6 +238,8 @@ class TeachAdmin(admin.ModelAdmin):
     inlines = [MembershipInline,]
     exclude = ('members',) #这个是重点
     list_display = ('name','mycol',)
+
+    #多对多的列无法显示，只能通过自定义函数实现，外键的可以通过 _ _ 查询到
     def mycol(self,obj):
         return obj.members.first().name
     mycol.short_description = '学科'
